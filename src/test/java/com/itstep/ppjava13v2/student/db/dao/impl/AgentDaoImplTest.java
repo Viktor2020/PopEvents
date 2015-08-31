@@ -8,176 +8,31 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.sql.DataSource;
-import java.io.PrintWriter;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 public class AgentDaoImplTest {
 
-	static DataSource connectionManager = new DataSource() {
-
-		@Override
-		public <T> T unwrap(Class<T> iface) throws SQLException {
-			return null;
-		}
-
-		@Override
-		public boolean isWrapperFor(Class<?> iface) throws SQLException {
-			return false;
-		}
-
-		@Override
-		public PrintWriter getLogWriter() throws SQLException {
-			return null;
-		}
-
-		@Override
-		public void setLogWriter(PrintWriter out) throws SQLException {
-
-		}
-
-		@Override
-		public void setLoginTimeout(int seconds) throws SQLException {
-
-		}
-
-		@Override
-		public int getLoginTimeout() throws SQLException {
-			return 0;
-		}
-
-		@Override
-		public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-			return null;
-		}
-
-		@Override
-		public Connection getConnection() throws SQLException {
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306/testPopEvent", "root", "qqqq");
-		}
-
-		@Override
-		public Connection getConnection(String username, String password) throws SQLException {
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306", username, password);
-		}
-
-	};
+	static DataSource connectionManager = R.connectionManager;
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		String sqlCreateTestDb = "CREATE DATABASE IF NOT EXISTS testPopEvent;";
-		Connection connection = null;
-		Connection connection1 = null;
-		Connection connection2 = null;
-		Connection connection3 = null;
-		Connection connection4 = null;
-		Connection connection5 = null;
-		Connection connection6 = null;
-		Connection connection7 = null;
-		Connection connection8 = null;
-		try {
-			connection = connectionManager.getConnection("root", "qqqq");
-			connection.createStatement().execute(sqlCreateTestDb);
-			connection.close();
-			connection = connectionManager.getConnection();
-			connection.createStatement().execute(R.sqlCreateTableAgents);
-
-			connection1 = connectionManager.getConnection();
-			connection1.createStatement().execute(R.sqlCreateTableCustomers);
-
-			connection2 = connectionManager.getConnection();
-			connection2.createStatement().execute(R.sqlCreateTableEngagements);
-
-			connection3 = connectionManager.getConnection();
-			connection3.createStatement().execute(R.sqlCreateTableEntertainers);
-
-			connection4 = connectionManager.getConnection();
-			connection4.createStatement().execute(R.sqlCreateTableMember);
-
-			connection5 = connectionManager.getConnection();
-			connection5.createStatement().execute(R.sqlCreateTableMusicalStyles);
-
-			connection6 = connectionManager.getConnection();
-			connection6.createStatement().execute(R.sqlCreateTableEntertainer_Members);
-
-			connection7 = connectionManager.getConnection();
-			connection7.createStatement().execute(R.sqlCreateTableEntertainer_Styles);
-
-			connection8 = connectionManager.getConnection();
-			connection8.createStatement().execute(R.sqlCreateTableCustomer_Styles);
-
-		} finally {
-			if (connection != null) {
-				connection.close();
-			}
-			if (connection1 != null) {
-				connection1.close();
-			}
-			if (connection2 != null) {
-				connection2.close();
-			}
-			if (connection3 != null) {
-				connection3.close();
-			}
-			if (connection4 != null) {
-				connection4.close();
-			}
-			if (connection5 != null) {
-				connection5.close();
-			}
-			if (connection6 != null) {
-				connection6.close();
-			}
-			if (connection7 != null) {
-				connection7.close();
-			}
-			if (connection8 != null) {
-				connection8.close();
-			}
-		}
+		R.createDB();
 	}
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
-		String sqlDropTestDb = "DROP DATABASE IF EXISTS testPopEvent;";
-		Connection connection = null;
-		try {
-			connection = connectionManager.getConnection();
-			connection.createStatement().execute(sqlDropTestDb);
-		} finally {
-			if (connection != null) {
-				connection.close();
-			}
-		}
+		R.deleteDB();
 	}
 
 	@Before
 	public void setUp() throws Exception {
-
-		String sqlClearTable = "TRUNCATE TABLE agents;";// clear table agents
-		Connection connection = null;
-		Connection connection2 = null;
-		try {
-			connection = connectionManager.getConnection();
-			connection.createStatement().execute(sqlClearTable);
-
-			connection2 = connectionManager.getConnection();
-			ResultSet resultSet = connection2.createStatement().executeQuery("SELECT COUNT(*) FROM agents");
-			resultSet.next();
-			assertEquals(0, resultSet.getLong(1));
-		} finally {
-			if (connection != null) {
-				connection.close();
-			}
-			if (connection2 != null) {
-				connection2.close();
-			}
-		}
+		R.clearTables();
 	}
 
 	@Test
@@ -289,26 +144,18 @@ public class AgentDaoImplTest {
 	public void testRemove() throws Exception {
 
 		Connection connection = null;
-		Connection connection2 = null;
 
 		try {
 			connection = connectionManager.getConnection();
 			connection.createStatement().execute(R.sqlInsertAgent); // add agent to db
 
-
 			AgentDao agentDao = new AgentDaoImpl(connectionManager);
 			agentDao.remove(1);
 
-			connection2 = connectionManager.getConnection();
-			ResultSet resultSet = connection2.createStatement().executeQuery("SELECT COUNT(*) FROM agents");
-			resultSet.next();
-			assertEquals(0, resultSet.getLong(1));
+			assertEquals(0, R.countRecordsInTable("Agents"));
 		} finally {
 			if (connection != null) {
 				connection.close();
-			}
-			if (connection2 != null) {
-				connection2.close();
 			}
 		}
 	}
@@ -316,24 +163,14 @@ public class AgentDaoImplTest {
 	@Test
 	public void testAgent() throws Exception {
 
-		Connection connection2 = null;
+		Agent agent = new Agent("FName", "LName", "KM", "DP", "DN", "9379992", new Date(), 1, 1);
 
-		try {
-			Agent agent = new Agent("FName", "LName", "KM", "DP", "DN", "9379992", new Date(), 1, 1);
+		AgentDao agentDao = new AgentDaoImpl(connectionManager);
+		agentDao.save(agent);
+		agentDao.remove(agent);
 
-			AgentDao agentDao = new AgentDaoImpl(connectionManager);
-			agentDao.save(agent);
-			agentDao.remove(agent);
+		assertEquals(0, R.countRecordsInTable("Agents"));
 
-			connection2 = connectionManager.getConnection();
-			ResultSet resultSet = connection2.createStatement().executeQuery("SELECT COUNT(*) FROM agents");
-			resultSet.next();
-			assertEquals(0, resultSet.getLong(1));
-		} finally {
-			if (connection2 != null) {
-				connection2.close();
-			}
-		}
 	}
 
 	@Test
