@@ -1,6 +1,8 @@
 package com.itstep.ppjava13v2.student.db.dao.impl;
 
 import com.itstep.ppjava13v2.student.db.dao.MusicalStyleDao;
+import com.itstep.ppjava13v2.student.db.domain.Customer;
+import com.itstep.ppjava13v2.student.db.domain.Entertainer;
 import com.itstep.ppjava13v2.student.db.domain.MusicalStyle;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -10,12 +12,12 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class MusicalStyleDaoImplTest {
-
 
 	static DataSource connectionManager = R.connectionManager;
 
@@ -148,9 +150,15 @@ public class MusicalStyleDaoImplTest {
 	public void testMusicalStyle() throws Exception {
 
 		MusicalStyle musicalStyle = new MusicalStyle("Name");
+		Entertainer entertainer = new Entertainer("SName", "KM", "DP", "DN", "9379992", "http://google.com", "ent@gmail.com", new Date());
+		Customer customer = new Customer("FName", "LName", "KM", "DP", "DN", "9379992");
 
 		MusicalStyleDao musicalStyleDao = new MusicalStyleDaoImpl(connectionManager);
+		musicalStyle.addEntertainer(entertainer);
+		musicalStyle.addCustomer(customer);
 		musicalStyleDao.save(musicalStyle);
+		assertEquals(1, R.countRecordsInTable("Entertainers"));
+		assertEquals(1, R.countRecordsInTable("customers"));
 		musicalStyleDao.remove(musicalStyle);
 
 		assertEquals(0, R.countRecordsInTable("musicalStyles"));

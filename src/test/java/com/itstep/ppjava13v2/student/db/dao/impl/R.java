@@ -1,9 +1,8 @@
 package com.itstep.ppjava13v2.student.db.dao.impl;
 
 import javax.sql.DataSource;
-import java.io.PrintWriter;
-import java.sql.*;
-import java.util.logging.Logger;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 
  */
 public class R {
-	public static final String sqlCreateTableAgents = "CREATE TABLE Agents" +
+	public static final String sqlCreateTableAgents = "CREATE TABLE if not exists Agents" +
 			"(" +
 			"  agentId             INT PRIMARY KEY NOT NULL AUTO_INCREMENT," +
 			"  agentFirstName      VARCHAR(255)    NOT NULL," +
@@ -25,7 +24,7 @@ public class R {
 			"  agentCommissionRate INT             NOT NULL," +
 			"  agentEngagementId        INT" +
 			");";
-	public static final String sqlCreateTableCustomers = "CREATE TABLE Customers" +
+	public static final String sqlCreateTableCustomers = "CREATE TABLE if not exists  Customers" +
 			"(" +
 			"  customerId            INT PRIMARY KEY NOT NULL AUTO_INCREMENT," +
 			"  customerFirstName     VARCHAR(255)    NOT NULL," +
@@ -36,7 +35,7 @@ public class R {
 			"  customerPhoneNumber   VARCHAR(255)    NOT NULL," +
 			"  customerEngagementId          INT" +
 			");";
-	public static final String sqlCreateTableEntertainers = "CREATE TABLE Entertainers" +
+	public static final String sqlCreateTableEntertainers = "CREATE TABLE if not exists Entertainers" +
 			"(" +
 			"  entertainerId            INT PRIMARY KEY NOT NULL AUTO_INCREMENT," +
 			"  entertainerStageName     VARCHAR(255)    NOT NULL," +
@@ -49,7 +48,7 @@ public class R {
 			"  entertainerDateEntered   DATE            NOT NULL," +
 			"  entertainerEngagementId             INT" +
 			");";
-	public static final String sqlCreateTableEngagements = "CREATE TABLE Engagements" +
+	public static final String sqlCreateTableEngagements = "CREATE TABLE if not exists Engagements" +
 			"(" +
 			"  engagementId        INT PRIMARY KEY NOT NULL AUTO_INCREMENT," +
 			"  engagementStartDate DATE            NOT NULL," +
@@ -57,7 +56,7 @@ public class R {
 			"  engagementPrice     INT             NOT NULL" +
 			");";
 
-	public static final String sqlCreateTableMember = "CREATE TABLE Members" +
+	public static final String sqlCreateTableMember = "CREATE TABLE if not exists Members" +
 			"(" +
 			"   memberId          INT PRIMARY KEY NOT NULL AUTO_INCREMENT" +
 			",  memberFirstName   VARCHAR(255)    NOT NULL" +
@@ -66,25 +65,25 @@ public class R {
 			",  memberGender      VARCHAR(255)    NOT NULL " +
 			")";
 
-	public static final String sqlCreateTableMusicalStyles = "CREATE TABLE MusicalStyles" +
+	public static final String sqlCreateTableMusicalStyles = "CREATE TABLE if not exists MusicalStyles" +
 			"(" +
 			"  musicalStyleId   INT PRIMARY KEY NOT NULL AUTO_INCREMENT," +
 			"  musicalStyleName VARCHAR(255)    NOT NULL" +
 			");";
 
-	public static final String sqlCreateTableEntertainer_Members = "CREATE TABLE Entertainer_Members (" +
+	public static final String sqlCreateTableEntertainer_Members = "CREATE TABLE if not exists Entertainer_Members (" +
 			"  entertainerId INT REFERENCES Entertainers (entertainerId) ON UPDATE CASCADE    ON DELETE CASCADE" +
 			"  ,  memberId      INT REFERENCES Members (memberId)    ON UPDATE CASCADE " +
 			"  ,  CONSTRAINT entertainer_member_pkey PRIMARY KEY (entertainerId, memberId)" +
 			");";
 
-	public static final String sqlCreateTableEntertainer_Styles = "CREATE TABLE Entertainer_Styles (" +
+	public static final String sqlCreateTableEntertainer_Styles = "CREATE TABLE if not exists Entertainer_Styles (" +
 			"  entertainerId  INT REFERENCES Entertainers (entertainerId)    ON UPDATE CASCADE    ON DELETE CASCADE" +
 			"  ,  musicalStyleId INT REFERENCES MusicalStyles (musicalStyleId)  ON UPDATE CASCADE " +
 			"  ,  CONSTRAINT entertainer_style_pkey PRIMARY KEY (entertainerId, musicalStyleId)" +
 			");";
 
-	public static final String sqlCreateTableCustomer_Styles = "CREATE TABLE Customer_Styles (" +
+	public static final String sqlCreateTableCustomer_Styles = "CREATE TABLE if not exists Customer_Styles (" +
 			"  customerId     INT REFERENCES Customers (customerId)    ON UPDATE CASCADE    ON DELETE CASCADE" +
 			"  ,  musicalStyleId INT REFERENCES MusicalStyles (musicalStyleId)  ON UPDATE CASCADE " +
 			"  ,  CONSTRAINT customer_style_pkey PRIMARY KEY (customerId, musicalStyleId)" +
@@ -107,55 +106,7 @@ public class R {
 	public static final String sqlInsertMusicalStyle = "INSERT INTO musicalStyles( musicalStyleName) " +
 			"VALUES ('musicalStyleName');";
 
-
-	public static DataSource connectionManager = new DataSource() {
-
-		@Override
-		public <T> T unwrap(Class<T> iface) throws SQLException {
-			return null;
-		}
-
-		@Override
-		public boolean isWrapperFor(Class<?> iface) throws SQLException {
-			return false;
-		}
-
-		@Override
-		public PrintWriter getLogWriter() throws SQLException {
-			return null;
-		}
-
-		@Override
-		public void setLogWriter(PrintWriter out) throws SQLException {
-
-		}
-
-		@Override
-		public void setLoginTimeout(int seconds) throws SQLException {
-
-		}
-
-		@Override
-		public int getLoginTimeout() throws SQLException {
-			return 0;
-		}
-
-		@Override
-		public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-			return null;
-		}
-
-		@Override
-		public Connection getConnection() throws SQLException {
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306/testPopEvent", "root", "qqqq");
-		}
-
-		@Override
-		public Connection getConnection(String username, String password) throws SQLException {
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306", username, password);
-		}
-
-	};
+	public static DataSource connectionManager =  new TestDataSource();
 
 	public static void createDB() throws Exception {
 		String sqlCreateTestDb = "CREATE DATABASE IF NOT EXISTS testPopEvent;";

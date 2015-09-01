@@ -196,7 +196,7 @@ public class EntertainerDaoTest {
 		assertEquals(2, R.countRecordsInTable("MusicalStyles"));
 		assertEquals(2, R.countRecordsInTable("Members"));
 
-		assertEquals(0, R.countRecordsInTable("entertainers"));
+		assertEquals(1, R.countRecordsInTable("entertainers"));
 
 	}
 

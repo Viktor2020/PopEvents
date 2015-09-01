@@ -1,7 +1,9 @@
 package com.itstep.ppjava13v2.student.db.dao.impl;
 
+import com.itstep.ppjava13v2.student.db.dao.EntertainerDao;
 import com.itstep.ppjava13v2.student.db.dao.MemberDao;
 import com.itstep.ppjava13v2.student.db.dao.exeptions.DaoException;
+import com.itstep.ppjava13v2.student.db.domain.Entertainer;
 import com.itstep.ppjava13v2.student.db.domain.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +23,18 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Autowired
 	private DataSource connectionManager;
+	@Autowired
+	private EntertainerDao entertainerDao;
+
+	public MemberDaoImpl(DataSource connectionManager, EntertainerDao entertainerDao) {
+		this.connectionManager = connectionManager;
+		this.entertainerDao = entertainerDao;
+	}
 
 	public MemberDaoImpl(DataSource connectionManager) {
 		this.connectionManager = connectionManager;
+		this.entertainerDao = new EntertainerDaoImpl(connectionManager,new MusicalStyleDaoImpl(connectionManager),
+				this);
 	}
 
 	public MemberDaoImpl() {
@@ -203,7 +214,7 @@ public class MemberDaoImpl implements MemberDao {
 
 			log.trace("get statement {}", statement);
 			statement.executeUpdate();
-
+			changeCommunication(member);
 		} catch (SQLException e) {
 			log.error("Error member ", e);
 			throw new DaoException("Error member", e);
@@ -293,6 +304,7 @@ public class MemberDaoImpl implements MemberDao {
 					throw new SQLException("Creating member failed, no ID obtained.");
 				}
 			}
+			changeCommunication(member);
 		} catch (SQLException e) {
 			log.error("Error member ", e);
 			throw new DaoException("Error member", e);
@@ -311,6 +323,52 @@ public class MemberDaoImpl implements MemberDao {
 			}
 		}
 		return member;
+	}
+
+	private void changeCommunication(Member member) throws DaoException {
+		for (Entertainer entertainer : member.getMemberEntertainerList()){
+			updateMember(member.getMemberId(), entertainer);
+		}
+	}
+
+	private void updateMember(long memberId, Entertainer entertainer) throws DaoException {
+		if (entertainer.getEntertainerId() > 0) {
+			String sql = "INSERT INTO entertainer_members SET entertainerId = ?, memberId = ?;";
+
+			Connection connection = null;
+			PreparedStatement statement = null;
+			try {
+				log.trace("Try get connection");
+				connection = connectionManager.getConnection();
+				log.trace("Got connection {}", connection);
+				statement = connection.prepareStatement(sql);
+				statement.setLong(1, entertainer.getEntertainerId());
+				statement.setLong(2, memberId);
+				log.trace("get statement {}", statement);
+				statement.executeUpdate();
+			} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException ignored){
+
+			}catch (SQLException e) {
+				log.error("Error entertainer.updateMember ", e);
+				throw new DaoException("Error entertainer.updateMember", e);
+			} finally {
+				try {
+					if (statement != null) {
+						log.trace("Close statement {}", statement);
+						statement.close();
+					}
+					if (connection != null) {
+						log.trace("Close connection {}", connection);
+						connection.close();
+					}
+				} catch (SQLException e) {
+					log.error("Error close resource.close() ", e);
+				}
+			}
+		} else {
+			entertainerDao.save(entertainer);
+			updateMember(memberId,entertainer);
+		}
 	}
 
 	@Override
