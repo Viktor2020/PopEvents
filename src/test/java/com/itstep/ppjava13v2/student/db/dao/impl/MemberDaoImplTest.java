@@ -1,6 +1,7 @@
 package com.itstep.ppjava13v2.student.db.dao.impl;
 
 import com.itstep.ppjava13v2.student.db.dao.MemberDao;
+import com.itstep.ppjava13v2.student.db.domain.Entertainer;
 import com.itstep.ppjava13v2.student.db.domain.Member;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -155,7 +157,10 @@ public class MemberDaoImplTest {
 		Member member = new Member("FName", "LName", "KM", "DP");
 
 		MemberDao memberDao = new MemberDaoImpl(connectionManager);
+		Entertainer entertainer = new Entertainer("SName", "KM", "DP", "DN", "9379992", "http://google.com", "ent@gmail.com", new Date());
+		member.addEntertainer(entertainer);
 		memberDao.save(member);
+		assertEquals(1, R.countRecordsInTable("entertainers"));
 		memberDao.remove(member);
 
 		assertEquals(0, R.countRecordsInTable("members"));

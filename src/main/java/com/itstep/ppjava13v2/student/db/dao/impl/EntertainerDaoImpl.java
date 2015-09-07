@@ -5,6 +5,8 @@ import com.itstep.ppjava13v2.student.db.dao.MemberDao;
 import com.itstep.ppjava13v2.student.db.dao.MusicalStyleDao;
 import com.itstep.ppjava13v2.student.db.dao.exeptions.DaoException;
 import com.itstep.ppjava13v2.student.db.domain.Entertainer;
+import com.itstep.ppjava13v2.student.db.domain.Member;
+import com.itstep.ppjava13v2.student.db.domain.MusicalStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -248,7 +250,7 @@ public class EntertainerDaoImpl implements EntertainerDao {
 
 			log.trace("get statement {}", statement);
 			statement.executeUpdate();
-
+			changeCommunication(entertainer);
 		} catch (SQLException e) {
 			log.error("Error entertainer ", e);
 			throw new DaoException("Error entertainer", e);
@@ -271,6 +273,7 @@ public class EntertainerDaoImpl implements EntertainerDao {
 	@Override
 	public void remove(Entertainer entertainer) throws DaoException {
 		remove(entertainer.getEntertainerId());
+		entertainer.setEntertainerId(0);
 	}
 
 	@Override
@@ -353,6 +356,7 @@ public class EntertainerDaoImpl implements EntertainerDao {
 					throw new SQLException("Creating entertainer failed, no ID obtained.");
 				}
 			}
+			changeCommunication(entertainer);
 		} catch (SQLException e) {
 			log.error("Error entertainer ", e);
 			throw new DaoException("Error entertainer", e);
@@ -371,6 +375,96 @@ public class EntertainerDaoImpl implements EntertainerDao {
 			}
 		}
 		return entertainer;
+	}
+
+	private void changeCommunication(Entertainer entertainer) throws DaoException {
+			for (MusicalStyle style : entertainer.getEntertainerMusicalStyleList()){
+				updateMusical(entertainer.getEntertainerId(),style);
+			}
+			for (Member member : entertainer.getEntertainerMemberList()){
+				updateMember(entertainer.getEntertainerId(), member);
+			}
+
+	}
+
+	private void updateMember(long entertainerId, Member member) throws DaoException {
+		if (member.getMemberId() > 0) {
+			String sql = "INSERT INTO entertainer_members SET entertainerId = ?, memberId = ?;";
+
+			Connection connection = null;
+			PreparedStatement statement = null;
+			try {
+				log.trace("Try get connection");
+				connection = connectionManager.getConnection();
+				log.trace("Got connection {}", connection);
+				statement = connection.prepareStatement(sql);
+				statement.setLong(1, entertainerId);
+				statement.setLong(2, member.getMemberId());
+				log.trace("get statement {}", statement);
+				statement.executeUpdate();
+			} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException ignored){
+
+			}catch (SQLException e) {
+				log.error("Error entertainer.updateMember ", e);
+				throw new DaoException("Error entertainer.updateMember", e);
+			} finally {
+				try {
+					if (statement != null) {
+						log.trace("Close statement {}", statement);
+						statement.close();
+					}
+					if (connection != null) {
+						log.trace("Close connection {}", connection);
+						connection.close();
+					}
+				} catch (SQLException e) {
+					log.error("Error close resource.close() ", e);
+				}
+			}
+		} else {
+			memberDao.save(member);
+			updateMember(entertainerId, member);
+		}
+	}
+
+	private void updateMusical(long entertainerId, MusicalStyle style) throws DaoException{
+		if (style.getMusicalStyleId() > 0) {
+			String sql = "INSERT INTO entertainer_styles SET entertainerId = ?, musicalStyleId = ?;";
+
+			Connection connection = null;
+			PreparedStatement statement = null;
+			try {
+				log.trace("Try get connection");
+				connection = connectionManager.getConnection();
+				log.trace("Got connection {}", connection);
+				statement = connection.prepareStatement(sql);
+				statement.setLong(1, entertainerId);
+				statement.setLong(2, style.getMusicalStyleId());
+				log.trace("get statement {}", statement);
+				statement.executeUpdate();
+			}  catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException ignored){
+
+			}catch(SQLException e) {
+				log.error("Error entertainer.updateMusical ", e);
+				throw new DaoException("Error entertainer.updateMusical", e);
+			} finally {
+				try {
+					if (statement != null) {
+						log.trace("Close statement {}", statement);
+						statement.close();
+					}
+					if (connection != null) {
+						log.trace("Close connection {}", connection);
+						connection.close();
+					}
+				} catch (SQLException e) {
+					log.error("Error close resource.close() ", e);
+				}
+			}
+		} else {
+			musicalStyleDao.save(style);
+			updateMusical(entertainerId,style);
+		}
 	}
 
 	@Override
