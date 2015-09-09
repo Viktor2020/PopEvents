@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.itstep.ppjava13v2.student.db.domain.Engagement" table="engagements">
+        <meta attribute="class-description">This class contains the Engagement detail.</meta>
+        <id name="engagementId" type="long" column="engagementId">
+            <generator class="native"/>
+        </id>
+
+        <property name="engagementStartDate" column="engagementStartDate" type="java.util.Date"/>
+        <property name="engagementEndDate" column="engagementEndDate" type="java.util.Date"/>
+        <property name="engagementPrice" column="engagementPrice" type="long"/>
+
+        <set name="engagementCustomerList" cascade="all">
+            <key column="customerEngagementId"/>
+            <one-to-many class="com.itstep.ppjava13v2.student.db.domain.Customer"/>
+        </set>
+
+        <set name="engagementAgentList" cascade="all">
+            <key column="agentEngagementId"/>
+            <one-to-many class="com.itstep.ppjava13v2.student.db.domain.Agent"/>
+        </set>
+
+        <set name="engagementEntertainerList" cascade="all">
+            <key column="entertainerEngagementId"/>
+            <one-to-many class="com.itstep.ppjava13v2.student.db.domain.Entertainer"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

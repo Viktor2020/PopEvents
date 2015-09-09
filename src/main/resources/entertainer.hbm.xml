@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.itstep.ppjava13v2.student.db.domain.Entertainer" table="entertainers">
+        <meta attribute="class-description">This class contains the customer detail.</meta>
+        <id name="entertainerId" type="long" column="entertainerId">
+            <generator class="native"/>
+        </id>
+        <property name="entertainerStageName" column="entertainerStageName" type="java.lang.String"/>
+        <property name="entertainerStreetAddress" column="entertainerStreetAddress" type="java.lang.String"/>
+        <property name="entertainerCity" column="entertainerCity" type="java.lang.String"/>
+        <property name="entertainerState" column="entertainerState" type="java.lang.String"/>
+        <property name="entertainerPhoneNumber" column="entertainerPhoneNumber" type="java.lang.String"/>
+        <property name="entertainerWebPage" column="entertainerWebPage" type="java.lang.String"/>
+        <property name="entertainerEmailAddress" column="entertainerEmailAddress" type="java.lang.String"/>
+        <property name="entertainerDateEntered" column="entertainerDateEntered" type="java.util.Date"/>
+
+        <set name="entertainerMusicalStyleList" cascade="save-update" table="entertainer_styles">
+            <key column="entertainerId"/>
+            <many-to-many column="musicalStyleId" class="com.itstep.ppjava13v2.student.db.domain.MusicalStyle"/>
+        </set>
+        <set name="entertainerMemberList" cascade="save-update" table="entertainer_members">
+            <key column="entertainerId"/>
+            <many-to-many column="memberId" class="com.itstep.ppjava13v2.student.db.domain.Member"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

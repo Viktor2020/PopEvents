@@ -15,6 +15,11 @@
 
         <!-- List of XML mapping files -->
         <mapping resource="agents.hbm.xml"/>
+        <mapping resource="customer.hbm.xml"/>
+        <mapping resource="entertainer.hbm.xml"/>
+        <mapping resource="member.hbm.xml"/>
+        <mapping resource="musicalStyle.hbm.xml"/>
+        <mapping resource="engagement.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>
