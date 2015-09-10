@@ -1,7 +1,7 @@
 package com.itstep.ppjava13v2.student.db.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Музыкальный стиль
@@ -10,12 +10,12 @@ public class MusicalStyle {
 	private long musicalStyleId;
 	private String musicalStyleName;
 
-	private List<Customer> musicalStyleCustomerList;
-	private List<Entertainer> musicalStyleEntertainerList;
+	private Set<Customer> musicalStyleCustomerList;
+	private Set<Entertainer> musicalStyleEntertainerList;
 
 	public MusicalStyle() {
-		musicalStyleCustomerList = new ArrayList<Customer>();
-		musicalStyleEntertainerList = new ArrayList<Entertainer>();
+		musicalStyleCustomerList = new HashSet<>();
+		musicalStyleEntertainerList = new HashSet<>();
 	}
 
 	public MusicalStyle(String musicalStyleName) {
@@ -45,19 +45,19 @@ public class MusicalStyle {
 		this.musicalStyleName = musicalStyleName;
 	}
 
-	public List<Customer> getMusicalStyleCustomerList() {
+	public Set<Customer> getMusicalStyleCustomerList() {
 		return musicalStyleCustomerList;
 	}
 
-	public void setMusicalStyleCustomerList(List<Customer> musicalStyleCustomerList) {
+	public void setMusicalStyleCustomerList(Set<Customer> musicalStyleCustomerList) {
 		this.musicalStyleCustomerList = musicalStyleCustomerList;
 	}
 
-	public List<Entertainer> getMusicalStyleEntertainerList() {
+	public Set<Entertainer> getMusicalStyleEntertainerList() {
 		return musicalStyleEntertainerList;
 	}
 
-	public void setMusicalStyleEntertainerList(List<Entertainer> musicalStyleEntertainerList) {
+	public void setMusicalStyleEntertainerList(Set<Entertainer> musicalStyleEntertainerList) {
 		this.musicalStyleEntertainerList = musicalStyleEntertainerList;
 	}
 

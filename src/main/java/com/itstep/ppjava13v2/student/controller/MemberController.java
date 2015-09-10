@@ -16,6 +16,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class MemberController {
 	@RequestMapping
 	public ModelAndView getAllMembers() throws DaoException {
 		ModelAndView mav = new ModelAndView("members/members");
-		List members = memberDao.findAll();
+		List members = new ArrayList(memberDao.findAll());
 		mav.addObject("members", members);
 		log.trace(members.toString());
 		return mav;
@@ -51,7 +52,7 @@ public class MemberController {
 	@RequestMapping("/searchMembers")
 	public ModelAndView searchContacts(@RequestParam(required = false, defaultValue = "") String memberFirstName) throws DaoException {
 		ModelAndView mav = new ModelAndView("members/members");
-		List<Member> members = memberDao.findByMemberFirstName(memberFirstName.trim());
+		List<Member> members = new ArrayList<>(memberDao.findByMemberFirstName(memberFirstName.trim()));
 		mav.addObject("members", members);
 		return mav;
 	}

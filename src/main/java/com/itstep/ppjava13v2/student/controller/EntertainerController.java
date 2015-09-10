@@ -16,6 +16,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class EntertainerController {
 	@RequestMapping
 	public ModelAndView getAllEntertainers() throws DaoException {
 		ModelAndView mav = new ModelAndView("entertainers/entertainers");
-		List entertainers = entertainerDao.findAll();
+		List entertainers = new ArrayList(entertainerDao.findAll());
 		mav.addObject("entertainers", entertainers);
 		log.trace(entertainers.toString());
 		return mav;
@@ -51,7 +52,7 @@ public class EntertainerController {
 	@RequestMapping("/searchEntertainers")
 	public ModelAndView searchContacts(@RequestParam(required = false, defaultValue = "") String entertainerStageName) throws DaoException {
 		ModelAndView mav = new ModelAndView("entertainers/entertainers");
-		List<Entertainer> entertainers = entertainerDao.findByEntertainerFirstName(entertainerStageName.trim());
+		List<Entertainer> entertainers = new ArrayList<>(entertainerDao.findByEntertainerFirstName(entertainerStageName.trim()));
 		mav.addObject("entertainers", entertainers);
 		return mav;
 	}

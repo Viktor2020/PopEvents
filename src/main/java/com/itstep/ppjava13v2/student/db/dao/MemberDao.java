@@ -3,15 +3,15 @@ package com.itstep.ppjava13v2.student.db.dao;
 import com.itstep.ppjava13v2.student.db.dao.exeptions.DaoException;
 import com.itstep.ppjava13v2.student.db.domain.Member;
 
-import java.util.List;
+import java.util.Set;
 
 /**
 
  */
 public interface MemberDao {
-	List<Member> findAll() throws DaoException;
+	Set<Member> findAll() throws DaoException;
 
-	List<Member> findAllByEntertainerId(long entertainerId) throws DaoException;
+	Set<Member> findAllByEntertainerId(long entertainerId) throws DaoException;
 
 	Member findById(long id) throws DaoException;
 
@@ -23,5 +23,5 @@ public interface MemberDao {
 
 	Member save(Member member) throws DaoException;
 
-	List<Member> findByMemberFirstName(String memberFirstName) throws DaoException;
+	Set<Member> findByMemberFirstName(String memberFirstName) throws DaoException;
 }

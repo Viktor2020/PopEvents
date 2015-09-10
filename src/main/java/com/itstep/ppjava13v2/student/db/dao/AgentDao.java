@@ -3,19 +3,19 @@ package com.itstep.ppjava13v2.student.db.dao;
 import com.itstep.ppjava13v2.student.db.dao.exeptions.DaoException;
 import com.itstep.ppjava13v2.student.db.domain.Agent;
 
-import java.util.List;
+import java.util.Set;
 
 /**
 
  */
 public interface AgentDao {
-	List<Agent> findAll() throws DaoException;
+	Set<Agent> findAll() throws DaoException;
 
-	List<Agent> findAllByEngagementId(long engagementId) throws DaoException;
+	Set<Agent> findAllByEngagementId(long engagementId) throws DaoException;
 
 	Agent findById(long id) throws DaoException;
 
-	List<Agent> findByAgentFirstName(String agentFirstName) throws DaoException;
+	Set<Agent> findByAgentFirstName(String agentFirstName) throws DaoException;
 
 	void update(Agent agent) throws DaoException;
 

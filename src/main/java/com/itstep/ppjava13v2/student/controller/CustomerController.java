@@ -19,6 +19,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class CustomerController {
 	@RequestMapping
 	public ModelAndView getAllCustomers() throws DaoException {
 		ModelAndView mav = new ModelAndView("customers/customers");
-		List customers = customerDao.findAll();
+		List customers = new ArrayList(customerDao.findAll());
 		mav.addObject("customers", customers);
 		log.trace(customers.toString());
 		return mav;

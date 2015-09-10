@@ -16,6 +16,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class AgentController {
 	@RequestMapping
 	public ModelAndView getAllAgents() throws DaoException {
 		ModelAndView mav = new ModelAndView("agents/agents");
-		List agents = agentDao.findAll();
+		List agents = new ArrayList(agentDao.findAll());
 		mav.addObject("agents", agents);
 		log.trace(agents.toString());
 		return mav;
@@ -48,7 +49,7 @@ public class AgentController {
 	@RequestMapping("/searchAgents")
 	public ModelAndView searchContacts(@RequestParam(required = false, defaultValue = "") String agentFirstName) throws DaoException {
 		ModelAndView mav = new ModelAndView("agents/agents");
-		List<Agent> agents = agentDao.findByAgentFirstName(agentFirstName.trim());
+		List<Agent> agents = new ArrayList<>(agentDao.findByAgentFirstName(agentFirstName.trim()));
 		mav.addObject("agents", agents);
 		return mav;
 	}
