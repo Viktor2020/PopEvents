@@ -13,6 +13,7 @@
         <property name="hibernate.connection.password">qqqq</property>
         <property name="show_sql" >true</property>
         <property name="hibernate.enable_lazy_load_no_trans">true</property>
+        <property name="current_session_context_class">thread</property>
 
         <!-- List of XML mapping files -->
         <mapping resource="agents.hbm.xml"/>
