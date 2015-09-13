@@ -1,7 +1,9 @@
 package com.itstep.ppjava13v2.student.db.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * партнер
@@ -13,10 +15,10 @@ public class Member {
 	private String memberPhoneNumber;
 	private String memberGender;
 
-	private List<Entertainer> memberEntertainerList;
+	private Set<Entertainer> memberEntertainerList;
 
 	public Member() {
-		memberEntertainerList = new ArrayList<Entertainer>();
+		memberEntertainerList = new HashSet<>();
 	}
 
 	public Member(String memberFirstName, String memberLastName, String memberPhoneNumber, String memberGender) {
@@ -77,11 +79,11 @@ public class Member {
 		this.memberGender = memberGender;
 	}
 
-	public List<Entertainer> getMemberEntertainerList() {
+	public Set<Entertainer> getMemberEntertainerList() {
 		return memberEntertainerList;
 	}
 
-	public void setMemberEntertainerList(List<Entertainer> memberEntertainerList) {
+	public void setMemberEntertainerList(Set<Entertainer> memberEntertainerList) {
 		this.memberEntertainerList = memberEntertainerList;
 	}
 

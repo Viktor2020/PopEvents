@@ -1,7 +1,9 @@
 package com.itstep.ppjava13v2.student.db.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Клиент
@@ -15,10 +17,10 @@ public class Customer {
 	private String customerState;
 	private String customerPhoneNumber;
 
-	private List<MusicalStyle> customerMusicalStyleList;
+	private Set<MusicalStyle> customerMusicalStyleList;
 
 	public Customer() {
-		customerMusicalStyleList = new ArrayList<MusicalStyle>();
+		customerMusicalStyleList = new HashSet<>();
 	}
 
 	public Customer(String customerFirstName, String customerLastName, String customerStreetAddress,
@@ -100,11 +102,11 @@ public class Customer {
 		this.customerPhoneNumber = customerPhoneNumber;
 	}
 
-	public List<MusicalStyle> getCustomerMusicalStyleList() {
+	public Set<MusicalStyle> getCustomerMusicalStyleList() {
 		return customerMusicalStyleList;
 	}
 
-	public void setCustomerMusicalStyleList(List<MusicalStyle> customerMusicalStyleList) {
+	public void setCustomerMusicalStyleList(Set<MusicalStyle> customerMusicalStyleList) {
 		this.customerMusicalStyleList = customerMusicalStyleList;
 	}
 

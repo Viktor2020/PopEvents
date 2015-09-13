@@ -16,6 +16,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class EngagementController {
 	@RequestMapping
 	public ModelAndView getAllEngagements() throws DaoException {
 		ModelAndView mav = new ModelAndView("engagements/engagements");
-		List engagements = engagementDao.findAll();
+		List engagements = new ArrayList(engagementDao.findAll());
 		mav.addObject("engagements", engagements);
 		log.trace(engagements.toString());
 		return mav;
@@ -51,7 +52,7 @@ public class EngagementController {
 	@RequestMapping("/searchEngagements")
 	public ModelAndView searchContacts(@RequestParam(required = false, defaultValue = "") long engagementPrice) throws DaoException {
 		ModelAndView mav = new ModelAndView("engagements/engagements");
-		List<Engagement> engagements = engagementDao.findByEngagementPrice(engagementPrice);
+		List<Engagement> engagements = new ArrayList<>(engagementDao.findByEngagementPrice(engagementPrice));
 		mav.addObject("engagements", engagements);
 		return mav;
 	}

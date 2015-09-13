@@ -3,17 +3,17 @@ package com.itstep.ppjava13v2.student.db.dao;
 import com.itstep.ppjava13v2.student.db.dao.exeptions.DaoException;
 import com.itstep.ppjava13v2.student.db.domain.Customer;
 
-import java.util.List;
+import java.util.Set;
 
 /**
 
  */
 public interface CustomerDao {
-	List<Customer> findAll() throws DaoException;
+	Set<Customer> findAll() throws DaoException;
 
-	List<Customer> findByEngagementFirstName(String customerFirstName) throws DaoException;
+	Set<Customer> findByEngagementFirstName(String customerFirstName) throws DaoException;
 
-	List<Customer> findAllByEntertainerId(long engagementId) throws DaoException;
+	Set<Customer> findAllByEntertainerId(long engagementId) throws DaoException;
 
 	Customer findById(long id) throws DaoException;
 

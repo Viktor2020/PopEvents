@@ -18,6 +18,7 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
+    <import resource="dataSource.xml"/>
     <mvc:resources mapping="/js/**" location="WEB-INF/js/"/>
 
 </beans>

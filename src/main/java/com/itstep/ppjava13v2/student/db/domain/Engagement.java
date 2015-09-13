@@ -1,8 +1,6 @@
 package com.itstep.ppjava13v2.student.db.domain;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * контракт
@@ -13,14 +11,14 @@ public class Engagement {
 	private Date engagementEndDate;
 	private long engagementPrice;
 
-	private List<Customer> engagementCustomerList;       // клиенты
-	private List<Agent> engagementAgentList;             // агенты
-	private List<Entertainer> engagementEntertainerList; // артисты
+	private Set<Customer> engagementCustomerList;       // клиенты
+	private Set<Agent> engagementAgentList;             // агенты
+	private Set<Entertainer> engagementEntertainerList; // артисты
 
 	public Engagement() {
-		engagementEntertainerList = new ArrayList<Entertainer>();
-		engagementAgentList = new ArrayList<Agent>();
-		engagementCustomerList = new ArrayList<Customer>();
+		engagementEntertainerList = new HashSet<>();
+		engagementAgentList = new HashSet<>();
+		engagementCustomerList = new HashSet<>();
 	}
 
 	public Engagement(Date engagementStartDate, Date engagementEndDate, long engagementPrice) {
@@ -70,27 +68,27 @@ public class Engagement {
 		this.engagementPrice = engagementPrice;
 	}
 
-	public List<Customer> getEngagementCustomerList() {
+	public Set<Customer> getEngagementCustomerList() {
 		return engagementCustomerList;
 	}
 
-	public void setEngagementCustomerList(List<Customer> engagementCustomerList) {
+	public void setEngagementCustomerList(Set<Customer> engagementCustomerList) {
 		this.engagementCustomerList = engagementCustomerList;
 	}
 
-	public List<Agent> getEngagementAgentList() {
+	public Set<Agent> getEngagementAgentList() {
 		return engagementAgentList;
 	}
 
-	public void setEngagementAgentList(List<Agent> engagementAgentList) {
+	public void setEngagementAgentList(Set<Agent> engagementAgentList) {
 		this.engagementAgentList = engagementAgentList;
 	}
 
-	public List<Entertainer> getEngagementEntertainerList() {
+	public Set<Entertainer> getEngagementEntertainerList() {
 		return engagementEntertainerList;
 	}
 
-	public void setEngagementEntertainerList(List<Entertainer> engagementEntertainerList) {
+	public void setEngagementEntertainerList(Set<Entertainer> engagementEntertainerList) {
 		this.engagementEntertainerList = engagementEntertainerList;
 	}
 

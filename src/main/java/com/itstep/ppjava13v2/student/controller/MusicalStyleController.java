@@ -16,6 +16,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class MusicalStyleController {
 	@RequestMapping
 	public ModelAndView getAllMusicalStyles() throws DaoException {
 		ModelAndView mav = new ModelAndView("musicalStyles/musicalStyles");
-		List musicalStyles = musicalStyleDao.findAll();
+		List musicalStyles = new ArrayList(musicalStyleDao.findAll());
 		mav.addObject("musicalStyles", musicalStyles);
 		log.trace(musicalStyles.toString());
 		return mav;
@@ -48,7 +49,7 @@ public class MusicalStyleController {
 	@RequestMapping("/searchMusicalStyles")
 	public ModelAndView searchContacts(@RequestParam(required = false, defaultValue = "") String musicalStyleName) throws DaoException {
 		ModelAndView mav = new ModelAndView("musicalStyles/musicalStyles");
-		List<MusicalStyle> musicalStyles = musicalStyleDao.findByMusicalStyleName(musicalStyleName.trim());
+		List<MusicalStyle> musicalStyles = new ArrayList<>(musicalStyleDao.findByMusicalStyleName(musicalStyleName.trim()));
 		mav.addObject("musicalStyles", musicalStyles);
 		return mav;
 	}

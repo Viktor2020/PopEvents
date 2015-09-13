@@ -1,8 +1,6 @@
 package com.itstep.ppjava13v2.student.db.domain;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * эстрадный артист
@@ -18,12 +16,12 @@ public class Entertainer {
 	private String entertainerEmailAddress;
 	private Date entertainerDateEntered;
 
-	private List<MusicalStyle> entertainerMusicalStyleList; // муз стили
-	private List<Member> entertainerMemberList;     // партнеры
+	private Set<MusicalStyle> entertainerMusicalStyleList; // муз стили
+	private Set<Member> entertainerMemberList;     // партнеры
 
 	public Entertainer() {
-		entertainerMusicalStyleList = new ArrayList<MusicalStyle>();
-		entertainerMemberList = new ArrayList<Member>();
+		entertainerMusicalStyleList = new HashSet<>();
+		entertainerMemberList = new HashSet<>();
 	}
 
 	public Entertainer(String entertainerStageName, String entertainerStreetAddress, String entertainerCity,
@@ -127,19 +125,19 @@ public class Entertainer {
 		this.entertainerDateEntered = entertainerDateEntered;
 	}
 
-	public List<MusicalStyle> getEntertainerMusicalStyleList() {
+	public Set<MusicalStyle> getEntertainerMusicalStyleList() {
 		return entertainerMusicalStyleList;
 	}
 
-	public void setEntertainerMusicalStyleList(List<MusicalStyle> entertainerMusicalStyleList) {
+	public void setEntertainerMusicalStyleList(Set<MusicalStyle> entertainerMusicalStyleList) {
 		this.entertainerMusicalStyleList = entertainerMusicalStyleList;
 	}
 
-	public List<Member> getEntertainerMemberList() {
+	public Set<Member> getEntertainerMemberList() {
 		return entertainerMemberList;
 	}
 
-	public void setEntertainerMemberList(List<Member> entertainerMemberList) {
+	public void setEntertainerMemberList(Set<Member> entertainerMemberList) {
 		this.entertainerMemberList = entertainerMemberList;
 	}
 

@@ -1,5 +1,3 @@
 pop events
 
-JDBC, Spring, mysql, junit, jsp
-
-test branch
+hibernate, Spring, mysql, jsp

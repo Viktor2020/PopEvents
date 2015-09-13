@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.itstep.ppjava13v2.student.db.domain.Agent" table="agents">
+        <meta attribute="class-description">
+            This class contains the agents detail.
+        </meta>
+        <id name="agentId" type="long" column="agentId">
+            <generator class="native"/>
+        </id>
+        <property name="agentFirstName" column="agentFirstName" type="java.lang.String"/>
+        <property name="agentLastName" column="agentLastName" type="java.lang.String"/>
+        <property name="agentStreetAddress" column="agentStreetAddress" type="java.lang.String"/>
+        <property name="agentCity" column="agentCity" type="java.lang.String"/>
+        <property name="agentState" column="agentState" type="java.lang.String"/>
+        <property name="agentPhoneNumber" column="agentPhoneNumber" type="java.lang.String"/>
+        <property name="agentDateHired" column="agentDateHired" type="java.util.Date"/>
+        <property name="agentSalary" column="agentSalary" type="long"/>
+        <property name="agentCommissionRate" column="agentCommissionRate" type="long"/>
+    </class>
+</hibernate-mapping>
