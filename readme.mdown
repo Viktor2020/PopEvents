@@ -2,4 +2,8 @@
 
 pop events
 
-hibernate, Spring, mysql, jsp
+jdbc -> hibernate
+Spring, mysql, jsp, maven
+
+Database schema
+![db](/db.png)
