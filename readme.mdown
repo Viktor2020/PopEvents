@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/Viktor2020/PopEvents.svg?branch=master)](https://travis-ci.org/Viktor2020/PopEvents)
 
-pop events
+pop events web app crud server
 
 jdbc -> hibernate
 Spring, mysql, jsp, maven
